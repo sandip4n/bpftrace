@@ -90,6 +90,11 @@ int sp_offset()
   return offset("sp");
 }
 
+int sarg_frame_offset(int arg_num)
+{
+  return (arg_num + 1) * sizeof(uintptr_t);
+}
+
 std::string name()
 {
   return std::string("aarch64");

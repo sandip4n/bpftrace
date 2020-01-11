@@ -3,6 +3,12 @@
 #include <algorithm>
 #include <array>
 
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define STK_FRAME_SARGS_OFFSET  96   /* (SP + 32) + Saved register args */
+#else
+#define STK_FRAME_SARGS_OFFSET  112  /* (SP + 48) + Saved register args */
+#endif
+
 namespace bpftrace {
 namespace arch {
 
@@ -97,6 +103,11 @@ int pc_offset()
 int sp_offset()
 {
   return offset("r1");
+}
+
+int sarg_frame_offset(int arg_num)
+{
+  return STK_FRAME_SARGS_OFFSET + arg_num * sizeof(uintptr_t);
 }
 
 std::string name()

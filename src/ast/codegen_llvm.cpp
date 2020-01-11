@@ -214,7 +214,7 @@ void CodegenLLVM::visit(Builtin &builtin)
         b_.CreateGEP(ctx_, b_.getInt64(sp_offset * sizeof(uintptr_t))),
         "reg_sp");
     AllocaInst *dst = b_.CreateAllocaBPF(builtin.type, builtin.ident);
-    Value *src = b_.CreateAdd(sp, b_.getInt64((arg_num + 1) * sizeof(uintptr_t)));
+    Value *src = b_.CreateAdd(sp, b_.getInt64(arch::sarg_frame_offset(arg_num)));
     b_.CreateProbeRead(dst, 8, src);
     expr_ = b_.CreateLoad(dst);
     b_.CreateLifetimeEnd(dst);
